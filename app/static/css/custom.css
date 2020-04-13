@@ -1,0 +1,132 @@
+.slider-area {
+    padding-top: 120px;
+    padding-left: 100px;
+}
+
+.slider-heading-light {
+    color: #ffffff;
+    font-size: 70px;
+}
+
+.slider-description-light {
+    color: #ffffff;
+    padding-top: 5px;
+    font-size: 18px;
+    font-weight: light;
+}
+
+.slider-button-light {
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    background: transparent;
+}
+
+.slider-button-light:hover {
+    color: #ffffff;
+}
+
+.slider-heading-dark {
+    color: #000000;
+    font-size: 70px;
+}
+
+.slider-description-dark {
+    color: #000000;
+    padding-top: 5px;
+    font-size: 18px;
+    font-weight: light;
+}
+
+.slider-button-dark {
+    color: #000000;
+    border: 2px solid #000000;
+    background: transparent;
+}
+
+.caption .heading .name {
+    color: #0074CF;
+    margin-bottom: 0px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    padding-left: 5px;
+}
+
+.caption .heading .category {
+    color: #666666;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+}
+
+.caption .heading .seller {
+    color: #a81b1b;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+.caption .heading .price {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+
+.caption .description {
+    color: #7f7f7f;
+}
+
+.nav-pills .nav-item a:hover {
+    background-color: #fafafa;
+}
+
+.nav-pills .nav-item a.active:hover {
+    background-color: #1a1a1a;
+}
+
+.quantity-indicator {
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.toast-top-center,
+.toast-top-full-width {
+    top: 12px;
+}
+
+.StripeElement {
+    background-color: #f7f7f9;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    border: 0px solid #ced4da;
+    border-radius: 0;
+    color: #55595c;
+}
+
+.StripeElement--invalid {
+    border-color: #fa755a;
+}
+
+#card-errors {
+    color: #fa755a;
+}
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
