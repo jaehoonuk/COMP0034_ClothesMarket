@@ -10,8 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Follow these instructions
 
-Clone this repository on your local machine, then execute the following commands on your favourite terminal.
-Note: you must execute these commands from the repository root folder.
+Clone this repository on your local machine, then execute the following commands from the repository root folder.
 
 ```
 pip install -r requirements.txt
