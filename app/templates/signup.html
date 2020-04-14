@@ -1,0 +1,35 @@
+{# Author: Jinho Lee #}
+
+{% extends "base.html" %}
+{% set active_page = "signup" %}
+{% block content %}
+<div class="pt-5 row justify-content-center">
+  <div>
+      <h1>Sign Up</h1>
+      <div class="card mt-4" style="width: 500px">
+          <div class="card-body">
+              <form action="/signup" method="POST">
+                  {{ form.csrf_token }}
+                <div class="form-group">
+                  <label for="username">Full Name</label>
+                  <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email address" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Enter password again" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{# Author: Jinho Lee #}
+
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block content %}
+    <div class="slider-pro" id="my-slider">
+        <div class="sp-slides">
+            <div class="sp-slide">
+                <img class="sp-image" src="/static/images/bg1.jpg"/>
+                <div class="sp-layer">
+                    <div class="slider-area col-md-6">
+                        <h1 class="slider-heading-dark">Welcome to ClothesMarket</h1>
+                        <label style="color: #000000">Dress Well, Be Well</label>
+                        <p class="slider-description-dark">If everyday is a fashion show, then you need to dress like you mean it. We are the online marketplace for clothing and fashion products. Now. Get yourself dressed.</p><br>
+                        <a class="btn btn-lg slider-button-dark" href="/store" role="button">Browse our store</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-slide">
+                <img class="sp-image" src="/static/images/bg2.jpg"/>
+                <div class="sp-layer">
+                    <div class="slider-area col-md-7">
+                        <h1 class="slider-heading-light">Sell your clothes</h1>
+                        <p class="slider-description-light">Styles come and go, but trends can last forever.<br> Seperate yourself from the average by selling your fashion products here at ClothesMarket.</p><br>
+                        <a class="btn btn-lg slider-button-light" href="/signup" role="button">Become a seller</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-slide">
+                <img class="sp-image" src="/static/images/bg3.jpg"/>
+                <div class="sp-layer">
+                    <div class="slider-area col-md-7">
+                        <h1 class="slider-heading-light">Donate for the greater good</h1>
+                        <p class="slider-description-light">If everyday is a fashion show, then you need to dress like you mean it. Styles come and go, but trends like ours last forever. Seperate yourself from the average by wearing our products. Like it, Love it, Wear it.</p><br>
+                        <a class="btn btn-lg slider-button-light" href="/store" role="button">Browse our store</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#my-slider').sliderPro({
+            forceSize: 'fullWindow',
+            arrows: true,
+            touchSwipe: false,
+            centerImage: false,
+            buttons: false,
+            fade: true
+        });
+
+        $(".rating-stars").each(function(i, div) {
+            var rating = parseFloat($(this).text());
+            var readOnly = $(this).rateYo({
+                rating: rating,
+                starWidth: "15px",
+                readOnly: true
+            });
+        });
+    });
+</script>
+{% endblock %}
