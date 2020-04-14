@@ -1,0 +1,85 @@
+{# Author: Jinho Lee #}
+
+{% extends "base.html" %}
+{% set active_page = "basket" %}
+{% block content %}
+<div class="pt-5 row justify-content-center">
+    {% if basket and basket.totalQuantity > 0 %}
+    <div class="col-md-8">
+        <div class="card">
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="width: 22%"></th>
+                    <th style="width: 48%">Item</th>
+                    <th style="width: 15%">Price</th>
+                    <th style="width: 10%">Quantity</th>
+                    <th style="width: 5%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for itemId in basket.items %}
+                <tr>
+                <td><img style="max-width: 100px;" class="img-fluid" src="{{basket.items[itemId]['item']['imageUrl']}}"></td>
+                <td style="max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="/item/{{itemId}}" style="text-decoration:none; ">{{basket.items[itemId]['item']['productName']}}</a></td>
+                <td>£{{basket.items[itemId]['item']['price']}}</td>
+                <td>{{basket.items[itemId]['quantity']}}</td>
+                <td>
+                    <a class="removeFromCart btn btn-danger btn-sm" href="/removeFromCart/{{itemId}}"><i class="fa fa-close"></i></a>
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <div class="card-body">
+                <h4 class="text-center">Basket Summary</h4>
+                <table class="table table-hover">
+                    <tr>
+                        <td>Sub Total</td>
+                        <td>{{basket.totalPrice}}</td>
+                    </tr>
+                    <tr>
+                        <td>Shipping Fee</td>
+                        <td>Free</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold; color: #000000;">Total</td>
+                        <td style="font-weight:bold; color: #000000;">£{{basket.totalPrice}}</td>
+                    </tr>
+                </table>
+
+                <div class="text-center">
+                    <a href="/checkout" class="btn btn-success">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-12">
+        <h1 class="text-center">Your basket is empty</h1>
+        <div class="text-center p-4">
+            <img class="img-fluid" style="max-width: 500px;" src="/static/images/emptycart.png">
+            <br>
+            <a class="btn btn-success" href="/store">Continue Shopping</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  $(".removeFromCart").click(function(e) {
+    e.preventDefault();
+    var targetUrl = $(this).attr("href");
+
+    if (confirm("Are you sure you wish to remove this item?")) {
+        window.location.href = targetUrl;
+    }
+  });
+</script>
+{% endblock %}

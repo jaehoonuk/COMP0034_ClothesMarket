@@ -1,0 +1,105 @@
+{# Author: Jinho Lee #}
+
+{% extends "base.html" %}
+{% set active_page = "sell" %}
+{% block content %}
+<div class="pt-5 row justify-content-center">
+  <div>
+      <h1>Sell an Item</h1>
+      <div class="card mt-4">
+          <div class="card-body">
+              <form action="/sell" method="POST" enctype="multipart/form-data">
+                  {{ form.csrf_token }}
+                <div class="form-group">
+                  <label for="productName">Product Name</label>
+                  <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter the name of the product" required>
+                </div>
+                <div class="form-group">
+                  <label for="manufacturer">Manufacturer / Brand</label>
+                  <input type="text" class="form-control" id="manufacturer" name="manufacturer" placeholder="Enter the manufacturer / brand" required>
+                </div>
+                <div class="form-group">
+                  <div>
+                    <label for="category">Category</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="category" id="shirtCheck" value="Shirt" checked>
+                    <label class="form-check-label" for="category1">Shirt</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="category" id="trousersCheck" value="Trousers">
+                    <label class="form-check-label" for="category2">Trousers</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="category" id="shoesCheck" value="Shoes">
+                    <label class="form-check-label" for="category3">Shoes</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="category" id="skirtCheck" value="Skirt">
+                    <label class="form-check-label" for="category4">Skirt</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="category" id="outerCheck" value="Outer">
+                    <label class="form-check-label" for="category5">Outer</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="category" id="accessoriesCheck" value="Accessories">
+                    <label class="form-check-label" for="category6">Accessories</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="manufacturer">Quantity in stock</label>
+                  <input type="number" class="form-control" id="quantity" name="quantity" min="1" placeholder="Enter the quantity in stock" required>
+                </div>
+                <div class="form-group">
+                  <label for="imageUrl">Photo / Image</label>
+                  <input type="file" class="form-control-file" name="imageUrl" id="imageUrl" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                  <label for="estimatedPrice">Estimated Price</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">£</div>
+                    </div>
+                    <input type="number" class="form-control" id="estimatedPrice" name="estimatedPrice" readonly required>
+                    <button id="estimatePriceBtn" class="btn btn-info btn-sm">Compute Estimated Price</button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="price">Price</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">£</div>
+                    </div>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter the price" required>
+                  </div>
+                </div>
+                <button id="submitBtn" type="submit" class="btn btn-primary" disabled>Post Item for Sale</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+  $("#estimatePriceBtn").on("click", function(e){
+    e.preventDefault();
+    if($('#shirtCheck').is(':checked')){
+      $("#estimatedPrice").val(10)
+    }else if($('#trousersCheck').is(':checked')){
+      $("#estimatedPrice").val(15)
+    }else if($('#shoesCheck').is(':checked')){
+      $("#estimatedPrice").val(40)
+    }else if($('#outerCheck').is(':checked')){
+      $("#estimatedPrice").val(65)
+    }else if($('#accessoriesCheck').is(':checked')){
+      $("#estimatedPrice").val(100)
+    }else{
+      $("#estimatedPrice").val(10)
+    }
+
+    $("#submitBtn").prop('disabled', false);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{# Author: Jinho Lee #}
+
+{% extends "base.html" %}
+{% set active_page = "checkout" %}
+{% block content %}
+{% if basket and basket.totalQuantity > 0 %}
+<div class="pt-5 row justify-content-center">
+    <div class="col-sm-12 col-md-8">
+        <div class="card p-2 mb-3">
+            <div class="card-body">
+                <h4>Payment Details</h4>
+                <form id="payment-form" action="/checkout" method="POST">
+                    {{ checkoutForm.csrf_token }}
+                    <div class="form-group">
+                        <label for="cardHolderName">Cardholder Name</label>
+                        <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" value="{% if user %}{{user.fullName}}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-element">Credit or Debit Card</label>
+                        <div id="card-element"></div>
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card p-2">
+            <div class="card-body">
+                <h4>Shipping Address</h4>
+                <form action="/account" method="POST">
+                    {{ shippingForm.csrf_token }}
+                    <div class="form-group">
+                        <label for="streetAddress">Street Address</label>
+                        <input type="text" class="form-control" id="streetAddress" name="streetAddress" value="{% if shippingInfo %}{{shippingInfo.streetAddress}}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="houseNumber">House Number</label>
+                        <input type="text" class="form-control" id="houseNumber" name="houseNumber" value="{% if shippingInfo %}{{shippingInfo.houseNumber}}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">Zipcode</label>
+                        <input type="text" class="form-control" id="zipCode" name="zipCode" value="{% if shippingInfo %}{{shippingInfo.zipCode}}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{% if shippingInfo %}{{shippingInfo.city}}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" class="form-control" id="country" name="country" value="{% if shippingInfo %}{{shippingInfo.country}}{% endif %}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <table class="table table-hover border" style="max-width: 100%">
+            <thead>
+                <tr>
+                    <th style="font-size: 1.25rem;">Order Summary</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for itemId in basket.items %}
+                <tr>
+                    <td style="max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a class="text-info" href="/item/{{itemId}}" style="text-decoration:none; ">{{basket.items[itemId]['item']['productName']}}</a></td>
+                    <td>{{basket.items[itemId]['quantity']}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td>Sub Total</td>
+                    <td>£{{basket.totalPrice}}</td>
+                </tr>
+                <tr>
+                    <td>Shipping Fee</td>
+                    <td>Free</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Total</td>
+                    <td style="font-weight: bold">£{{basket.totalPrice}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mb-3 text-center">
+            <a id="submitOrderBtn" href="#" class="btn btn-success">Submit Order</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+    var stripe = Stripe('pk_test_nXyNBw9KzyiHGLoZS6oj7XoS00LRPLPg1T');
+    var elements = stripe.elements();
+    
+    var style = {
+    base: {
+        color: '#32325d',
+        fontFamily: '"Nunito Sans", "Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+        color: '#aab7c4'
+        }
+    },
+    invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+    }
+    };
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', {
+        style: style,
+        hidePostalCode: true
+    });
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+        displayError.textContent = event.error.message;
+    } else {
+        displayError.textContent = '';
+    }
+    });
+
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        form.submit();
+    }
+
+    $("#submitOrderBtn").on( "click", function(e) {
+        e.preventDefault();
+
+        event.preventDefault();
+
+        var options = {
+            name: document.getElementById('cardHolderName').value,
+            address_line1: document.getElementById('streetAddress').value,
+            address_line2: document.getElementById('houseNumber').value,
+            address_city: document.getElementById('city').value,
+            address_zip: document.getElementById('zipCode').value,
+            address_country: document.getElementById('country').value
+        }
+
+        stripe.createToken(card, options).then(function(result) {
+            if (result.error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+</script>
+{% endblock %}
